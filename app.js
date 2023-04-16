@@ -12,5 +12,5 @@ const $ = cheerio.load(html);
 const seatsRemaining = $('td:contains("Total Seats Remaining:")').next().text().trim();
 
 // Output the result
-return seatsRemaining;
+return seatsRemaining*1; //convert to Integer
 };
