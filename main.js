@@ -57,5 +57,5 @@ function courseChecker() {
   };
 };
 
-setInterval(courseChecker, 15*60*1000); // run every 20 mins
+setInterval(courseChecker, 15*60*1000); // run every 15 mins
 
