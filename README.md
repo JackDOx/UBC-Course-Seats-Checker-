@@ -27,4 +27,6 @@ Instruction:
 
 This script is set to run automatically every 15 mins. You can change if u want in setInterval() function in main.js
 
+I'm dumb with Docker so this is a bit messy. Forgive blah blahh,..
+
 Have fun :D 
