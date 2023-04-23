@@ -1,8 +1,8 @@
 const https = require('https');
 const fs = require('fs');
-const app = require('./app');
 const dotenv = require('dotenv');
 const nodemailer = require('nodemailer');
+const gettingSeats = require('./app');
 // const { sendMail } = require('./mailing');
 
 dotenv.config({ path: './config.env' });
@@ -29,7 +29,8 @@ function courseChecker() {
 
   req.end();
 
-  if ( app.gettingSeats >= 1) {
+  console.log('Seats remaining in this course: ' + gettingSeats());
+  if ( gettingSeats() >= 1) {
     // transporter options
     let transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -41,7 +42,7 @@ function courseChecker() {
 
     // mail content
     let mailOptions = {
-      from: '"Jack Đỗ" <jackydo1973@gmail.com>', // sender address
+      from: '"Jack Đỗ" <jamiehuynh2022@gmail.com>', // sender address
       to: process.env.YOUR_EMAIL, // list of receivers
       subject: 'Seats remaining for this course', // Subject line
       text: 'There is 1 or more seats remaining in this course. Come check it out!', // plain text body
@@ -57,5 +58,6 @@ function courseChecker() {
   };
 };
 
-setInterval(courseChecker, 15*60*1000); // run every 20 mins
+setInterval(courseChecker, 25*60*1000); // run every 25 mins
+// To avoid getting my account banned don't set it lower than 15
 

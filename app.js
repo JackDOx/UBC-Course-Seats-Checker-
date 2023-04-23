@@ -1,7 +1,7 @@
 const fs = require('fs');
 const cheerio = require('cheerio');
 
-exports.gettingSeats = () => {
+function gettingSeats() {
 // Load the HTML file
 const html = fs.readFileSync('response.html', 'utf-8');
 
@@ -14,3 +14,5 @@ const seatsRemaining = $('td:contains("Total Seats Remaining:")').next().text().
 // Output the result
 return seatsRemaining*1; //convert to Integer
 };
+
+module.exports = gettingSeats;
