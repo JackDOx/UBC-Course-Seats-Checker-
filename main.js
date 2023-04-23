@@ -60,4 +60,3 @@ function courseChecker() {
 
 setInterval(courseChecker, 25*60*1000); // run every 25 mins
 // To avoid getting my account banned don't set it lower than 15
-
