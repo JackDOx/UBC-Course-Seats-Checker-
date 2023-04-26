@@ -22,7 +22,7 @@ function courseChecker() {
     const file = fs.createWriteStream('response.html');
     res.pipe(file);
 
-    console.log('Seats remaining in this course: ' + gettingSeats());
+    console.log('Seats remaining in this course: ' + gettingSeats() + `\nChecked at ${Date(Date.now()).toString()}`);
     if ( gettingSeats() >= 1) {
       // transporter options
       let transporter = nodemailer.createTransport({
@@ -61,5 +61,5 @@ function courseChecker() {
 
 };
 
-setInterval(courseChecker, 25*60*1000); // run every 25 mins
-//courseChecker();
+setInterval(courseChecker, 20*60*1000); // run every 20 mins
+// courseChecker();
