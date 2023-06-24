@@ -7,6 +7,8 @@ const gettingSeats = require('./app');
 
 dotenv.config({ path: './config.env' });
 
+var mailSent = false;
+
 const options = {
   hostname: process.env.HOST_DOMAIN,
   path: process.env.HOST_PATH,
@@ -14,6 +16,10 @@ const options = {
 };
 
 function courseChecker() {
+  // If the mail has bent sent, exit program immediately
+  if (mailSent) {
+    process.exit(0);
+  };
 
   const url = process.env.HOST_DOMAIN + process.env.HOST_PATH;
   let seats = 0;
@@ -65,6 +71,7 @@ function courseChecker() {
           return console.log(error);
         }
         console.log('Message sent: %s', info.messageId);
+        mailSent = true;
       });
     };
 
@@ -80,5 +87,7 @@ function courseChecker() {
 };
 
 courseChecker() // run the code initially
-setInterval(courseChecker, 12*60*1000); // run every 20 mins
+
+setInterval(courseChecker, 12*60*1000);
+ // run every 20 mins
 // courseChecker();
