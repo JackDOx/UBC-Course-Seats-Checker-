@@ -8,22 +8,40 @@ const gettingSeats = require('./app');
 dotenv.config({ path: './config.env' });
 
 const options = {
-  hostname: process.env.HOST_NAME,
+  hostname: process.env.HOST_DOMAIN,
   path: process.env.HOST_PATH,
   method: 'GET'
 };
 
 function courseChecker() {
+
+  const url = process.env.HOST_DOMAIN + process.env.HOST_PATH;
+  let seats = 0;
+
   // sending https request to courses.students.ubc.ca
   const req = https.request(options, res => {
-    console.log(`statusCode: ${res.statusCode}`);
+    console.log(`StatusCode: ${res.statusCode}`);
 
     // write it in a html fild
     const file = fs.createWriteStream('response.html');
     res.pipe(file);
 
-    console.log('Seats remaining in this course: ' + gettingSeats() + `\nChecked at ${Date(Date.now()).toString()} \n`);
-    if ( gettingSeats() >= 1) {
+    // Extracting the dept value
+    const deptMatch = url.match(/dept=([^&]+)/);
+    const dept = deptMatch ? deptMatch[1] : null;
+
+    // Extracting the course value
+    const sectionMatch = url.match(/course=([^&]+)/);
+    const section = sectionMatch ? sectionMatch[1] : null;
+
+    const course = dept + ' '  + section;
+    // On event finish of writeStream, gettingSeats() will be called
+    file.on('finish', () => {
+      seats = gettingSeats();
+      console.log(`Seats remaining in the course ${course}: ${seats} \nChecked at ${Date(Date.now()).toString()} \n`);
+    });
+
+    if ( seats >= 1) {
       // transporter options
       let transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -37,9 +55,9 @@ function courseChecker() {
       let mailOptions = {
         from: '"Jack Đỗ" <jamiehuynh2022@gmail.com>', // sender address
         to: process.env.YOUR_EMAIL, // list of receivers
-        subject: 'Seats remaining for this course', // Subject line
-        text: 'There is 1 or more seats remaining in this course. Come check it out!', // plain text body
-        html: '<b>Come check it bro</b>' // html body
+        subject: `Seats remaining for the course ${course}`, // Subject line
+        text: `There is 1 or more seats remaining in the course ${course}. Come check it out!`, // plain text body
+        html: `<b>Come check it bro! Link: https://${url}</b>` // html body
       };
       // sendmail
       transporter.sendMail(mailOptions, (error, info) => {
@@ -62,5 +80,5 @@ function courseChecker() {
 };
 
 courseChecker() // run the code initially
-setInterval(courseChecker, 20*60*1000); // run every 20 mins
+setInterval(courseChecker, 12*60*1000); // run every 20 mins
 // courseChecker();
