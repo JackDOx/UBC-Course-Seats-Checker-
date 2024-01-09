@@ -93,3 +93,12 @@ courseChecker() // run the code initially
 setInterval(courseChecker, 12*60*1000);
  // run every 20 mins
 // courseChecker();
+
+// FOR DEPLOYMENT ONLY
+// FOR DEPLOYMENT ONLY
+const appli = express();
+const port = 3000;
+
+appli.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
